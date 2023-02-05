@@ -1,24 +1,20 @@
 package com.example.springmultitenancy3.util;
 
-import com.example.springmultitenancy3.entity.MasterTenant;
+import com.example.springmultitenancy3.entity.TenantDatabase;
 import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * @author Md. Amran Hossain
- */
+@Slf4j
 public final class DataSourceUtil {
+    public static DataSource createAndConfigureDataSource(TenantDatabase tenantDatabase) {
+        log.error("createAndConfigureDataSource : {}", tenantDatabase);
 
-    private static final Logger LOG = LoggerFactory.getLogger(DataSourceUtil.class);
-
-    public static DataSource createAndConfigureDataSource(MasterTenant masterTenant) {
         HikariDataSource ds = new HikariDataSource();
-        ds.setUsername(masterTenant.getUserName());
-        ds.setPassword(masterTenant.getPassword());
-        ds.setJdbcUrl(masterTenant.getUrl());
-        ds.setDriverClassName(masterTenant.getDriverClass());
+        ds.setUsername(tenantDatabase.getUsername());
+        ds.setPassword(tenantDatabase.getPassword());
+        ds.setJdbcUrl(tenantDatabase.getUrl());
+        ds.setDriverClassName(tenantDatabase.getDriverClass());
         // HikariCP settings - could come from the master_tenant table but
         // hardcoded here for brevity
         // Maximum waiting time for a connection from the pool
@@ -31,9 +27,9 @@ public final class DataSourceUtil {
         ds.setIdleTimeout(300000);
         ds.setConnectionTimeout(20000);
         // Setting up a pool name for each tenant datasource
-        String tenantConnectionPoolName = masterTenant.getDbName() + "-connection-pool";
+        String tenantConnectionPoolName = tenantDatabase.getDatabase() + "-connection-pool";
         ds.setPoolName(tenantConnectionPoolName);
-        LOG.info("Configured datasource:" + masterTenant.getDbName() + ". Connection pool name:" + tenantConnectionPoolName);
+
         return ds;
     }
 }

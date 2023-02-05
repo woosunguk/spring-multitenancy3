@@ -1,15 +1,15 @@
 package com.example.springmultitenancy3.config;
 
-import com.example.springmultitenancy3.entity.MasterTenant;
-import com.example.springmultitenancy3.repository.MasterTenantRepository;
+import com.example.springmultitenancy3.entity.TenantDatabase;
+import com.example.springmultitenancy3.repository.TenantDatabaseRepository;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import java.util.Properties;
 import javax.sql.DataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -21,61 +21,58 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- * @author Md. Amran Hossain
- */
+@Slf4j
 @Configuration
+@EnableConfigurationProperties(MainDatabaseConfigProperties.class)
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"com.example.springmultitenancy3.entity", "com.example.springmultitenancy3.repository"},
-        entityManagerFactoryRef = "masterEntityManagerFactory",
-        transactionManagerRef = "masterTransactionManager")
-public class MasterDatabaseConfig {
-
-    private static final Logger LOG = LoggerFactory.getLogger(MasterDatabaseConfig.class);
+        entityManagerFactoryRef = "mainEntityManagerFactory",
+        transactionManagerRef = "mainTransactionManager")
+public class MainDatabaseConfig {
 
     @Autowired
-    private MasterDatabaseConfigProperties masterDbProperties;
+    private MainDatabaseConfigProperties mainDatabaseConfigProperties;
 
     //Create Master Data Source using master properties and also configure HikariCP
-    @Bean(name = "masterDataSource")
-    public DataSource masterDataSource() {
+    @Bean(name = "mainDataSource")
+    public DataSource mainDataSource() {
         HikariDataSource hikariDataSource = new HikariDataSource();
-        hikariDataSource.setUsername(masterDbProperties.getUsername());
-        hikariDataSource.setPassword(masterDbProperties.getPassword());
-        hikariDataSource.setJdbcUrl(masterDbProperties.getUrl());
-        hikariDataSource.setDriverClassName(masterDbProperties.getDriverClassName());
-        hikariDataSource.setPoolName(masterDbProperties.getPoolName());
+        hikariDataSource.setUsername(mainDatabaseConfigProperties.getUsername());
+        hikariDataSource.setPassword(mainDatabaseConfigProperties.getPassword());
+        hikariDataSource.setJdbcUrl(mainDatabaseConfigProperties.getUrl());
+        hikariDataSource.setDriverClassName(mainDatabaseConfigProperties.getDriverClassName());
+        hikariDataSource.setPoolName(mainDatabaseConfigProperties.getPoolName());
         // HikariCP settings
-        hikariDataSource.setMaximumPoolSize(masterDbProperties.getMaxPoolSize());
-        hikariDataSource.setMinimumIdle(masterDbProperties.getMinIdle());
-        hikariDataSource.setConnectionTimeout(masterDbProperties.getConnectionTimeout());
-        hikariDataSource.setIdleTimeout(masterDbProperties.getIdleTimeout());
-        LOG.info("Setup of masterDataSource succeeded.");
+        hikariDataSource.setMaximumPoolSize(mainDatabaseConfigProperties.getMaxPoolSize());
+        hikariDataSource.setMinimumIdle(mainDatabaseConfigProperties.getMinIdle());
+        hikariDataSource.setConnectionTimeout(mainDatabaseConfigProperties.getConnectionTimeout());
+        hikariDataSource.setIdleTimeout(mainDatabaseConfigProperties.getIdleTimeout());
+
         return hikariDataSource;
     }
 
     @Primary
-    @Bean(name = "masterEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean masterEntityManagerFactory() {
+    @Bean(name = "mainEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean mainEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         // Set the master data source
-        em.setDataSource(masterDataSource());
+        em.setDataSource(mainDataSource());
         // The master tenant entity and repository need to be scanned
-        em.setPackagesToScan(new String[]{MasterTenant.class.getPackage().getName(), MasterTenantRepository.class.getPackage().getName()});
+        em.setPackagesToScan(new String[]{TenantDatabase.class.getPackage().getName(), TenantDatabaseRepository.class.getPackage().getName()});
         // Setting a name for the persistence unit as Spring sets it as
         // 'default' if not defined
-        em.setPersistenceUnitName("masterdb-persistence-unit");
+        em.setPersistenceUnitName("maindb-persistence-unit");
         // Setting Hibernate as the JPA provider
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         // Set the hibernate properties
         em.setJpaProperties(hibernateProperties());
-        LOG.info("Setup of masterEntityManagerFactory succeeded.");
+
         return em;
     }
 
-    @Bean(name = "masterTransactionManager")
-    public JpaTransactionManager masterTransactionManager(@Qualifier("masterEntityManagerFactory") EntityManagerFactory emf) {
+    @Bean(name = "mainTransactionManager")
+    public JpaTransactionManager mainTransactionManager(@Qualifier("mainEntityManagerFactory") EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
         return transactionManager;

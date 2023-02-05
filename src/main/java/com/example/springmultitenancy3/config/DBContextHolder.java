@@ -1,15 +1,11 @@
 package com.example.springmultitenancy3.config;
 
-/**
- * @author Md. Amran Hossain
- * The context holder implementation is a container that stores the current context as a ThreadLocal reference.
- */
 public class DBContextHolder {
 
     private static final ThreadLocal<String> contextHolder = new ThreadLocal<>();
 
-    public static void setCurrentDb(String dbType) {
-        contextHolder.set(dbType);
+    public static void setCurrentDb(String database) {
+        contextHolder.set(database);
     }
 
     public static String getCurrentDb() {

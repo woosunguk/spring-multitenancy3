@@ -1,14 +1,11 @@
-package com.example.springmultitenancy3.tenant.service;
+package com.example.springmultitenancy3.consumer.service;
 
-import com.example.springmultitenancy3.tenant.entity.Product;
-import com.example.springmultitenancy3.tenant.repository.ProductRepository;
+import com.example.springmultitenancy3.consumer.entity.Product;
+import com.example.springmultitenancy3.consumer.repository.ProductRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * @author Md. Amran Hossain
- */
 @Service
 public class ProductServiceImpl implements ProductService {
 

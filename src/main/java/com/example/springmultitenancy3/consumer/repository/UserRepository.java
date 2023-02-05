@@ -1,12 +1,9 @@
-package com.example.springmultitenancy3.tenant.repository;
+package com.example.springmultitenancy3.consumer.repository;
 
-import com.example.springmultitenancy3.tenant.entity.User;
+import com.example.springmultitenancy3.consumer.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-/**
- * @author Md. Amran Hossain
- */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 

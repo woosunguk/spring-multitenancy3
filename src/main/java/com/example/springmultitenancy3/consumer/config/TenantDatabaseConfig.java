@@ -1,10 +1,9 @@
-package com.example.springmultitenancy3.tenant.config;
+package com.example.springmultitenancy3.consumer.config;
 
+import com.example.springmultitenancy3.consumer.Consumer;
 import jakarta.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
-import javax.accessibility.AccessibleValue;
-import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
@@ -20,13 +19,12 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- * @author Md. Amran Hossain
- */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "com.example.springmultitenancy3.tenant.repository", "com.example.springmultitenancy3.tenant.entity" })
-@EnableJpaRepositories(basePackages = {"com.example.springmultitenancy3.tenant.repository", "com.example.springmultitenancy3.tenant.service" },
+@ComponentScan(basePackages = {"com.example.springmultitenancy3.consumer.repository",
+    "com.example.springmultitenancy3.consumer.entity"})
+@EnableJpaRepositories(basePackages = {"com.example.springmultitenancy3.consumer.repository",
+    "com.example.springmultitenancy3.consumer.service"},
         entityManagerFactoryRef = "tenantEntityManagerFactory",
         transactionManagerRef = "tenantTransactionManager")
 public class TenantDatabaseConfig {
@@ -49,7 +47,7 @@ public class TenantDatabaseConfig {
      * @return
      */
     @Bean(name = "datasourceBasedMultitenantConnectionProvider")
-    @ConditionalOnBean(name = "masterEntityManagerFactory")
+    @ConditionalOnBean(name = "mainEntityManagerFactory")
     public MultiTenantConnectionProvider multiTenantConnectionProvider() {
         // Autowires the multi connection provider
         return new DataSourceBasedMultiTenantConnectionProviderImpl();
@@ -83,7 +81,7 @@ public class TenantDatabaseConfig {
                     CurrentTenantIdentifierResolver tenantResolver) {
         LocalContainerEntityManagerFactoryBean emfBean = new LocalContainerEntityManagerFactoryBean();
         //All tenant related entities, repositories and service classes must be scanned
-        emfBean.setPackagesToScan("com.example.springmultitenancy3.tenant");
+        emfBean.setPackagesToScan(Consumer.class.getPackage().getName());
         emfBean.setJpaVendorAdapter(jpaVendorAdapter());
         emfBean.setPersistenceUnitName("tenantdb-persistence-unit");
         Map<String, Object> properties = new HashMap<>();

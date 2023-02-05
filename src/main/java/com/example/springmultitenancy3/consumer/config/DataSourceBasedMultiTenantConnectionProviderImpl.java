@@ -1,8 +1,8 @@
-package com.example.springmultitenancy3.tenant.config;
+package com.example.springmultitenancy3.consumer.config;
 
 import com.example.springmultitenancy3.config.DBContextHolder;
-import com.example.springmultitenancy3.entity.MasterTenant;
-import com.example.springmultitenancy3.repository.MasterTenantRepository;
+import com.example.springmultitenancy3.entity.TenantDatabase;
+import com.example.springmultitenancy3.repository.TenantDatabaseRepository;
 import com.example.springmultitenancy3.util.DataSourceUtil;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +17,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-/**
- * @author Md. Amran Hossain
- */
 @Slf4j
 @Configuration
 public class DataSourceBasedMultiTenantConnectionProviderImpl extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
@@ -31,7 +28,7 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl extends AbstractDa
     private Map<String, DataSource> dataSourcesMtApp = new TreeMap<>();
 
     @Autowired
-    private MasterTenantRepository masterTenantRepository;
+    private TenantDatabaseRepository tenantDatabaseRepository;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -40,11 +37,13 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl extends AbstractDa
     protected DataSource selectAnyDataSource() {
         // This method is called more than once. So check if the data source map
         // is empty. If it is then rescan master_tenant table for all tenant
+        log.error("SDFSFSFSFSDF");
         if (dataSourcesMtApp.isEmpty()) {
-            List<MasterTenant> masterTenants = masterTenantRepository.findAll();
-            LOG.info("selectAnyDataSource() method call...Total tenants:" + masterTenants.size());
-            for (MasterTenant masterTenant : masterTenants) {
-                dataSourcesMtApp.put(masterTenant.getDbName(), DataSourceUtil.createAndConfigureDataSource(masterTenant));
+            List<TenantDatabase> tenantDatabases = tenantDatabaseRepository.findAll();
+            log.error("tenantDatabases : {}", tenantDatabases);
+            LOG.info("selectAnyDataSource() method call...Total tenants:" + tenantDatabases.size());
+            for (TenantDatabase tenantDatabase : tenantDatabases) {
+                dataSourcesMtApp.put(tenantDatabase.getDatabase(), DataSourceUtil.createAndConfigureDataSource(tenantDatabase));
             }
         }
 
@@ -61,10 +60,10 @@ public class DataSourceBasedMultiTenantConnectionProviderImpl extends AbstractDa
         log.error("tenantIdentifier : {}", tenantIdentifier);
 
         if (!this.dataSourcesMtApp.containsKey(tenantIdentifier)) {
-            List<MasterTenant> masterTenants = masterTenantRepository.findAll();
-            LOG.info("selectDataSource() method call...Tenant:" + tenantIdentifier + " Total tenants:" + masterTenants.size());
-            for (MasterTenant masterTenant : masterTenants) {
-                dataSourcesMtApp.put(masterTenant.getDbName(), DataSourceUtil.createAndConfigureDataSource(masterTenant));
+            List<TenantDatabase> tenantDatabases = tenantDatabaseRepository.findAll();
+            LOG.info("selectDataSource() method call...Tenant:" + tenantIdentifier + " Total tenants:" + tenantDatabases.size());
+            for (TenantDatabase tenantDatabase : tenantDatabases) {
+                dataSourcesMtApp.put(tenantDatabase.getDatabase(), DataSourceUtil.createAndConfigureDataSource(tenantDatabase));
             }
         }
         //check again if tenant exist in map after rescan master_db, if not, throw UsernameNotFoundException

@@ -1,11 +1,8 @@
-package com.example.springmultitenancy3.tenant.entity;
+package com.example.springmultitenancy3.consumer.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
 
-/**
- * @author Md. Amran Hossain
- */
 @Entity
 @Table(name = "tbl_product")
 public class Product implements Serializable {
