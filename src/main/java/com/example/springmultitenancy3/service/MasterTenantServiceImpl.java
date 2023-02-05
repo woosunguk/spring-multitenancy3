@@ -1,7 +1,7 @@
-package com.example.springmultitenancy3.mastertenant.service;
+package com.example.springmultitenancy3.service;
 
-import com.example.springmultitenancy3.mastertenant.entity.MasterTenant;
-import com.example.springmultitenancy3.mastertenant.repository.MasterTenantRepository;
+import com.example.springmultitenancy3.entity.MasterTenant;
+import com.example.springmultitenancy3.repository.MasterTenantRepository;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

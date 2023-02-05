@@ -1,6 +1,6 @@
-package com.example.springmultitenancy3.mastertenant.repository;
+package com.example.springmultitenancy3.repository;
 
-import com.example.springmultitenancy3.mastertenant.entity.MasterTenant;
+import com.example.springmultitenancy3.entity.MasterTenant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

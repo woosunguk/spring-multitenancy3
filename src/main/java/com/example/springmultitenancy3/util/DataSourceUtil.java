@@ -1,6 +1,6 @@
 package com.example.springmultitenancy3.util;
 
-import com.example.springmultitenancy3.mastertenant.entity.MasterTenant;
+import com.example.springmultitenancy3.entity.MasterTenant;
 import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import org.slf4j.Logger;

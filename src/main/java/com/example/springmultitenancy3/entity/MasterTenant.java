@@ -1,4 +1,4 @@
-package com.example.springmultitenancy3.mastertenant.entity;
+package com.example.springmultitenancy3.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package com.example.springmultitenancy3.tenant.config;
 
-import com.example.springmultitenancy3.mastertenant.config.DBContextHolder;
+import com.example.springmultitenancy3.config.DBContextHolder;
 import io.micrometer.common.util.StringUtils;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 

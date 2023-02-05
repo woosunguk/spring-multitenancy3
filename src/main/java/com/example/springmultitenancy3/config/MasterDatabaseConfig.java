@@ -1,7 +1,7 @@
-package com.example.springmultitenancy3.mastertenant.config;
+package com.example.springmultitenancy3.config;
 
-import com.example.springmultitenancy3.mastertenant.entity.MasterTenant;
-import com.example.springmultitenancy3.mastertenant.repository.MasterTenantRepository;
+import com.example.springmultitenancy3.entity.MasterTenant;
+import com.example.springmultitenancy3.repository.MasterTenantRepository;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import java.util.Properties;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"com.example.springmultitenancy3.mastertenant.entity", "com.example.springmultitenancy3.mastertenant.repository"},
+@EnableJpaRepositories(basePackages = {"com.example.springmultitenancy3.entity", "com.example.springmultitenancy3.repository"},
         entityManagerFactoryRef = "masterEntityManagerFactory",
         transactionManagerRef = "masterTransactionManager")
 public class MasterDatabaseConfig {

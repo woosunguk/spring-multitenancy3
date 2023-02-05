@@ -1,4 +1,4 @@
-package com.example.springmultitenancy3.mastertenant.controller;
+package com.example.springmultitenancy3.controller;
 
 import com.example.springmultitenancy3.tenant.entity.Product;
 import com.example.springmultitenancy3.tenant.service.ProductService;

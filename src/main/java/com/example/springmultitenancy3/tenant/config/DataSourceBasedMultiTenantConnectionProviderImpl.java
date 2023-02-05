@@ -1,8 +1,8 @@
 package com.example.springmultitenancy3.tenant.config;
 
-import com.example.springmultitenancy3.mastertenant.config.DBContextHolder;
-import com.example.springmultitenancy3.mastertenant.entity.MasterTenant;
-import com.example.springmultitenancy3.mastertenant.repository.MasterTenantRepository;
+import com.example.springmultitenancy3.config.DBContextHolder;
+import com.example.springmultitenancy3.entity.MasterTenant;
+import com.example.springmultitenancy3.repository.MasterTenantRepository;
 import com.example.springmultitenancy3.util.DataSourceUtil;
 import java.util.List;
 import java.util.Map;

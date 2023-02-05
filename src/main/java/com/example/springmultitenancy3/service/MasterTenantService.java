@@ -1,7 +1,7 @@
-package com.example.springmultitenancy3.mastertenant.service;
+package com.example.springmultitenancy3.service;
 
 
-import com.example.springmultitenancy3.mastertenant.entity.MasterTenant;
+import com.example.springmultitenancy3.entity.MasterTenant;
 import java.util.List;
 
 /**

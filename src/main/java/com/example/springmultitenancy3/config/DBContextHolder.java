@@ -1,4 +1,4 @@
-package com.example.springmultitenancy3.mastertenant.config;
+package com.example.springmultitenancy3.config;
 
 /**
  * @author Md. Amran Hossain
